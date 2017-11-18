@@ -49,8 +49,15 @@ namespace PasswordManager
 
         private void Btn_Copy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(LB_Passwords.SelectedItem.ToString());
-            LB_CopyConfirmed.Text = $"Password copied!";
+            try
+            {
+                Clipboard.SetText(LB_Passwords.SelectedItem.ToString());
+                LB_CopyConfirmed.Text = $"Password copied!";
+            }
+            catch(NullReferenceException)
+            {
+                LB_CopyConfirmed.Text = $"No password selected!";
+            } 
         }
     }
 }

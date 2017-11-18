@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PasswordManager
 {
+    [Serializable]
     class Storage
     {
         //Fields and properties
@@ -33,7 +34,12 @@ namespace PasswordManager
         }
         public bool AddCredential(Credential c)
         {
-            if(this.GetCredential(c.Name) == null)
+            if (c.Name is null || c.Name.Equals(""))
+            {
+                throw new InvalidCredentialException();
+            }
+
+            if (this.GetCredential(c.Name) == null)
             {
                 GetCredentialList.Add(c);
                 return true;

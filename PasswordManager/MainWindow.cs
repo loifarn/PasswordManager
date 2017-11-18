@@ -38,20 +38,29 @@ namespace PasswordManager
         //Credential buttons
         private void Btn_Crd_Open_Click(object sender, EventArgs e)
         {
-            Credential c = storage.GetCredential(LB_Display.SelectedItem.ToString());
+            Credential c;
+            try
+            {
+                c = storage.GetCredential(LB_Display.SelectedItem.ToString());
+                if (c != null)
+                {
+                    TB_Crd_Name.Text = c.Name;
+                    TB_Crd_Username.Text = c.Username;
+                    TB_Crd_Password.Text = c.Password;
+                    TB_Crd_Email.Text = c.Email;
+                    RTB_Crd_Comment.Text = c.Comment;
+                }
+                else
+                {
+                    MessageBox.Show($"Error opening credential");
+                }
+            }
+            catch(NullReferenceException)
+            {
+                MessageBox.Show("No credential selected");
+            }
             
-            if(c != null)
-            {
-                TB_Crd_Name.Text = c.Name;
-                TB_Crd_Username.Text = c.Username;
-                TB_Crd_Password.Text = c.Password;
-                TB_Crd_Email.Text = c.Email;
-                RTB_Crd_Comment.Text = c.Comment;
-            }
-            else
-            {
-                MessageBox.Show($"Error opening credential");
-            }
+
         }
         private void Btn_Crd_Add_Click(object sender, EventArgs e)
         {
@@ -62,14 +71,22 @@ namespace PasswordManager
                 TB_Crd_Email.Text,
                 RTB_Crd_Comment.Text);
 
-            if(storage.AddCredential(credential))
+            try
             {
-                MessageBox.Show("Credential Added");
+                if (storage.AddCredential(credential))
+                {
+                    MessageBox.Show("Credential Added");
+                }
+                else
+                {
+                    MessageBox.Show("Error adding credential");
+                }
             }
-            else
+            catch(InvalidCredentialException ex)
             {
-                MessageBox.Show("Error adding credential");
+                MessageBox.Show(ex.Message);
             }
+
         }
         private void Btn_Crd_Save_Click(object sender, EventArgs e)
         {
