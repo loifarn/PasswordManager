@@ -125,6 +125,8 @@
             this.Controls.Add(this.LB_Passwords);
             this.Controls.Add(this.Btn_Clear);
             this.Controls.Add(this.Btn_Generate);
+            this.MaximumSize = new System.Drawing.Size(328, 192);
+            this.MinimumSize = new System.Drawing.Size(328, 192);
             this.Name = "GenerateWindow";
             this.Text = "GenerateWindow";
             ((System.ComponentModel.ISupportInitialize)(this.NUD_PasswordLength)).EndInit();
