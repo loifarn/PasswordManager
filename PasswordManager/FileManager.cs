@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -17,14 +18,14 @@ namespace PasswordManager
             //Empty Constructor
         }
 
-        public void SaveToFile(string file, Storage storage)
+        public void SaveToFile(string file, BindingList<Credential> list)
         {
             try
             {
                 using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
-                    bf.Serialize(fs, storage);
+                    bf.Serialize(fs, list);
                 }
             }
             catch (SerializationException)
@@ -37,30 +38,27 @@ namespace PasswordManager
             }
         }
 
-        public Storage LoadFromFile(string file)
+        public BindingList<Credential> LoadFromFile(string file)
         {
-            Storage storage;
-            //TODO Adjust return so it's safer.
+            BindingList<Credential> list = new BindingList<Credential>();
+
             try
             {
                 using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Read))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
-                    storage = (Storage)bf.Deserialize(fs);
-
-                    return storage;
+                    list = (BindingList<Credential>)bf.Deserialize(fs);
                 }
             }
             catch (SerializationException)
             {
                 MessageBox.Show("Error loading file");
-                return null;
             }
             catch (ArgumentException)
             {
                 MessageBox.Show("No file selected");
-                return null;
             }
+            return list;
         }
     }
 }

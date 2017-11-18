@@ -17,17 +17,33 @@ namespace PasswordManager
         {
             InitializeComponent();
             storage = new Storage();
-            LB_Display.DataSource = storage.GetCredentialList;
+            LB_Display.DataSource = storage.Credentials;
         }
 
         //Menu Buttons
         private void Btn_Open_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    FileManager fm = new FileManager();
+                    storage.Credentials = fm.LoadFromFile(ofd.FileName);
+                    LB_Display.DataSource = storage.Credentials;
+                }
+            }
+
         }
         private void Btn_Save_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            using (SaveFileDialog ofd = new SaveFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    FileManager fm = new FileManager();
+                    fm.SaveToFile(ofd.FileName, storage.Credentials);
+                }
+            }
         }
         private void Btn_Generator_Click(object sender, EventArgs e)
         {

@@ -11,22 +11,18 @@ namespace PasswordManager
     class Storage
     {
         //Fields and properties
-        private BindingList<Credential> _credentialList;
-        public BindingList<Credential> GetCredentialList
-        {
-            get{ return _credentialList; }
-        }
+        public BindingList<Credential> Credentials { get; set; }
 
         //Constructor
         public Storage()
         {
-            _credentialList = new BindingList<Credential>();
+            Credentials = new BindingList<Credential>();
         }
 
         //Methods
         public Credential GetCredential(string name)
         {
-            foreach(Credential c in _credentialList)
+            foreach(Credential c in Credentials)
             {
                 if (c.Name == name) { return c; }
             }
@@ -41,7 +37,7 @@ namespace PasswordManager
 
             if (this.GetCredential(c.Name) == null)
             {
-                GetCredentialList.Add(c);
+                Credentials.Add(c);
                 return true;
             }
             else
@@ -53,7 +49,7 @@ namespace PasswordManager
         {
             if (this.GetCredential(c.Name) == null)
             {
-                GetCredentialList.Remove(c);
+                Credentials.Remove(c);
                 return true;
             }
             else
